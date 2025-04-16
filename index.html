@@ -1,31 +1,122 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles" />
+    <title>PokéCatalog | Home</title>
+    <meta name="description" content="A Catalog of Pokémons" />
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="scripts.js"></script>
   </head>
-
   <body>
+    <!-- Main Header -->
     <header class="main-header">
-      <h1 class="title">LA TV Shows</h1>
+      <img class="title-logo" src="pokemon_images/pokemonTitleLogo.png" alt="PokemonTitlelogo">
+      <img src="pokemon_images/pokeballlogo.png" alt="PokeballLogo">
+      <h1 class="title">PokéCatalog</h1>
     </header>
-    <div id="card-container"></div>
-    <div class="card" style="display: none">
-      <div class="card-content">
-        <h2>TV Show Title</h2>
-        <img src="" alt="TV Show Poster" />
-        <ul>
-          <li>Bullet Point 1</li>
-          <li>Bullet Point 2</li>
-          <li>Bullet Point 3</li>
-        </ul>
+
+    <header class="top-bar">
+      <!-- Sorting Dropdown -->
+      <div class="sort-container">
+        <label for="sort-select">Sort by: </label>
+        <select id="sort-select">
+          <option value="number-low-high" selected>National Pokédex Number (Low to High)</option>
+          <option value="number-high-low">National Pokédex Number (High to Low)</option>
+          <option value="alphabetical-a-z">Alphabetical (A-Z)</option>
+          <option value="alphabetical-z-a">Alphabetical (Z-A)</option>
+        </select>
+      </div>
+      <!-- Search Container -->
+      <div class="search-container">
+        <input type="text" id="search" placeholder="Search Pokémon..." />
+        <button id="caught-toggle" class="caught-toggle-btn">Pokemons Caught</button>
+      </div>
+    </header>
+
+    <button id="filter-toggle" class="filter-toggle-btn">Filter</button>
+        <!-- Filter Dropdown -->
+        <div id="filter-dropdown" class="filter-dropdown" style="display: none;">
+          <p>Select up to 2 Types:</p>
+          <!-- Types Options -->
+          <div class="filter-options">
+            <span class="filter-option type-normal" data-type="Normal">Normal</span>
+            <span class="filter-option type-fire" data-type="Fire">Fire</span>
+            <span class="filter-option type-water" data-type="Water">Water</span>
+            <span class="filter-option type-electric" data-type="Electric">Electric</span>
+            <span class="filter-option type-grass" data-type="Grass">Grass</span>
+            <span class="filter-option type-ice" data-type="Ice">Ice</span>
+            <span class="filter-option type-fighting" data-type="Fighting">Fighting</span>
+            <span class="filter-option type-poison" data-type="Poison">Poison</span>
+            <span class="filter-option type-ground" data-type="Ground">Ground</span>
+            <span class="filter-option type-flying" data-type="Flying">Flying</span>
+            <span class="filter-option type-psychic" data-type="Psychic">Psychic</span>
+            <span class="filter-option type-bug" data-type="Bug">Bug</span>
+            <span class="filter-option type-rock" data-type="Rock">Rock</span>
+            <span class="filter-option type-ghost" data-type="Ghost">Ghost</span>
+            <span class="filter-option type-dragon" data-type="Dragon">Dragon</span>
+            <span class="filter-option type-dark" data-type="Dark">Dark</span>
+            <span class="filter-option type-steel" data-type="Steel">Steel</span>
+            <span class="filter-option type-fairy" data-type="Fairy">Fairy</span>
+          </div>
+          <hr class="filter-divider" />
+          <!-- Type Filter Logic Options -->
+          <div class="filter-logic-toggle">
+            <button id="match-any" class="match-logic-btn active">Match Any</button>
+            <button id="match-all" class="match-logic-btn">Match All</button>
+          </div>
+          <hr class="filter-divider" />
+          <!-- Generations Options -->
+          <div class="generation-options">
+            <span class="generation-option" data-generation="1">Gen 1</span>
+            <span class="generation-option" data-generation="2">Gen 2</span>
+            <span class="generation-option" data-generation="3">Gen 3</span>
+            <span class="generation-option" data-generation="4">Gen 4</span>
+            <span class="generation-option" data-generation="5">Gen 5</span>
+            <span class="generation-option" data-generation="6">Gen 6</span>
+            <span class="generation-option" data-generation="7">Gen 7</span>
+          </div>
+          <hr class="filter-divider" />
+          <!-- Reset Filter to Default Button -->
+          <button id="reset-filter" class="reset-filter-btn">Reset</button>
+        </div>
+
+    <!-- Temporary Instruction Modal -->
+    <div id="instruction-modal" class="modal">
+      <div class="modal-content">
+        <span id="modal-close" class="close">&times;</span>
+        <h2>Welcome to PokéCatalog!</h2>
+        <p>
+          Try out the sort, filter, search, and pokémon catching features in this website!
+        </p> <p> ... </p>
+        <h3> How to catch Pokémons? </h3>
+        <p> 1. Click one of the pokéballs on the bottom right to activate Catch Mode! </p>
+        <p> 2. Click any pokémon images to catch. </p>
       </div>
     </div>
-    <div class="footer">
-      <button onclick="quoteAlert();">Get A Quote!</button>
-      <button onclick="removeLastCard();">Remove A Card!</button>
+
+    <!-- Container for displaying Pokémon Cards -->
+    <div id="card-container"></div>
+
+    <!-- Card Template -->
+    <div class="card" style="display: none">
+      <div class="card-content">
+        <h2>Pokemon</h2>
+        <!-- Container for Pokémon info (number and generation) -->
+        <div class="pokemon-info"></div>
+        <img src="" alt="Pokemon" />
+        <!-- Container for Pokémon types -->
+        <div class="pokemon-types"></div>
+      </div>
     </div>
+
+    <!-- Footer with additional buttons -->
+    <div class="footer">
+    </div>
+    <!-- Floating Pokéball button -->
+    <button id="masterball-button" title="Masterball: Guaranteed Catch!">
+      <img src="pokemon_images/masterball.png" alt="Masterball">
+    </button>
+    <button id="pokeball-button" title="Pokeball: Regular Catch!">
+      <img src="pokemon_images/pokeball.png" alt="Pokeball">
+    </button>
   </body>
 </html>

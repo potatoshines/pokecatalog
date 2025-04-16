@@ -1,70 +1,593 @@
-html,
-body {
+/* Reset margins and padding */
+html, body {
   margin: 0;
   padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f3e0c7;
+}
+
+/* Add smooth scrolling to html */
+html {
+  scroll-behavior: smooth;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to top, #f3e0c7, rgba(244, 244, 244, 0));
+  pointer-events: none;
 }
 
 .main-header {
-  background-color: rgba(0, 0, 0, 0.3);
-  padding-bottom: 10px;
+  display: flex;               /* Use flex layout */
+  align-items: center;         /* Vertically center items */
+  justify-content: center;     /* Center all items horizontally */
+  gap: 10px;                   /* Space between the image and title */
+  background: #fafafa;            /* Background color for the header */
+  padding: 20px 0 10px;        /* Padding around the header */
+}
+
+.main-header img {
+  width: 50px;                /* Adjust size to your liking */
+  height: auto;               /* Maintain aspect ratio */
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.title-logo {
+  position: absolute;
+  top: 40px;  
+  left: 100px;
+  width: 80px;
+  height: auto;
+  transform: scale(4);
+  z-index: 2;
 }
 
 .title {
-  text-align: center;
-  margin: 0;
-  font-size: 8em;
-  font-family: "Helvetica";
-  font-weight: normal;
-  color: white;
+  margin: 0;                  /* Remove default margin */
+  font-size: 3.9rem;
+  color: #f02e2e;
+  letter-spacing: 7px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.23);
 }
 
+/* Top Bar Container (for additional site navigation) */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background: linear-gradient(135deg, #ff1010, #ff6060, #ff5c5c); */
+  background: #ff5b5b;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  animation: slideDown 0.5s ease-out;
+}
+
+.sort-container label {
+  color: #fff;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Site Title Styling in Top Bar */
+.site-title {
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  margin: 0;
+}
+
+/* Container for Search and Filter Options in the Top Bar */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Search Bar Styling */
+#search {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 25px;         /* Initial round shape */
+  font-size: 1rem;
+  width: 200px;
+  transition: width 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
+  outline: none;
+}
+
+#search:focus {
+  width: 300px;                /* Grows longer on focus */
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  border-radius: 30px;         /* Make it Slightly more round on focus */
+}
+
+/* Filter Container Styling */
+.filter-container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* Filter Toggle Button */
+.filter-toggle-btn {
+  padding: 8px 16px;
+  float: right;
+  margin-top: 10px;
+  margin-right: 30px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-toggle-btn:hover {
+  background-color: #ff8a00;
+}
+
+/* Filter Dropdown Panel */
+.filter-dropdown {
+  background-color: #fff;
+  max-width: 600px;
+  margin: 10px auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Filter Options Container inside Dropdown */
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+/* Default Filter Option Elements (type boxes) */
+.filter-option {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  /* Remove any inherent background so that our default applies */
+  background-color: #ccc; /* default gray */
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.filter-option:hover {
+  transform: scale(1.03);
+}
+
+/* Force non-active filter options to remain gray */
+.filter-option:not(.active) {
+  background-color: #ccc !important;
+}
+
+/* Active filter option: fallback dark tone (if no type specified) */
+.filter-option.active {
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+/* Active filter options: override with official type colors when type- classes are present */
+.filter-option.active.type-normal    { background-color: #A8A77A !important; }
+.filter-option.active.type-fire      { background-color: #EE8130 !important; }
+.filter-option.active.type-water     { background-color: #6390F0 !important; }
+.filter-option.active.type-electric  { background-color: #F7D02C !important; }
+.filter-option.active.type-grass     { background-color: #7AC74C !important; }
+.filter-option.active.type-ice       { background-color: #96D9D6 !important; }
+.filter-option.active.type-fighting  { background-color: #C22E28 !important; }
+.filter-option.active.type-poison    { background-color: #A33EA1 !important; }
+.filter-option.active.type-ground    { background-color: #E2BF65 !important; }
+.filter-option.active.type-flying    { background-color: #A98FF3 !important; }
+.filter-option.active.type-psychic   { background-color: #F95587 !important; }
+.filter-option.active.type-bug       { background-color: #A6B91A !important; }
+.filter-option.active.type-rock      { background-color: #B6A136 !important; }
+.filter-option.active.type-ghost     { background-color: #735797 !important; }
+.filter-option.active.type-dragon    { background-color: #6F35FC !important; }
+.filter-option.active.type-dark      { background-color: #705746 !important; }
+.filter-option.active.type-steel     { background-color: #B7B7CE !important; }
+.filter-option.active.type-fairy     { background-color: #D685AD !important; }
+
+/* Reset Filter Button inside Dropdown */
+.reset-filter-btn {
+  padding: 6px 16px;
+  background-color: #929292;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 0px;
+  margin-left: 10px;
+}
+
+.reset-filter-btn:hover {
+  background-color: #ff8a00;
+}
+
+/* Card container uses flexbox with wrapping and more spacing between cards */
 #card-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin: 20px;
+  gap: 30px;  /* Increased gap for more space between cards */
+  padding: 20px;
 }
 
+/* Card styling: reduced width for smaller cards, with ample surrounding space */
 .card {
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 5px;
+  width: 250px;  /* Reduced from 300px to 250px */
+  background-color: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
 }
 
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Image styling: fixed height, using object-fit to avoid distortion, plus a hover zoom effect */
+.card img {
+  width: 90%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  image-rendering: auto;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+}
+
+/* Card content styling */
 .card-content {
   padding: 20px;
-  font-family: "Verdana";
-  color: #777;
+  color: #555;
 }
 
 .card-content h2 {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  text-transform: capitalize;
+  letter-spacing: 0.05em;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.06);
+  border-bottom: 0.6px solid #eee;
+  padding-bottom: 3px;
+  position: relative;
+}
+
+/* Container for Pokémon type labels */
+.pokemon-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Updated style for each type label for a longer rectangular appearance */
+.pokemon-type {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.pokemon-type:hover {
+  transform: scale(1.05);
+}
+
+/* Container for Pokémon number and generation info */
+.pokemon-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #777;
   margin-top: 0;
-  font-size: 20px;
+  padding: 0 10px;
 }
 
-.card img {
-  width: 100%;
-  height: auto;
+/* Style for both the Pokémon number and generation labels */
+.pokemon-number,
+.pokemon-generation {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: default;
+  transition: background-color 0.2s ease;
 }
 
+.pokemon-number:hover,
+.pokemon-generation:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+}
+
+/* Footer with darker background and centered text */
 .footer {
+  background-color: #f3e0c7;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,1);
+  text-align: center;
+  padding: 30px 0;
+  font-size: 1rem;
+}
+
+/* Official Pokémon type colors */
+.type-normal { background-color: #A8A77A; }
+.type-fire { background-color: #EE8130; }
+.type-water { background-color: #6390F0; }
+.type-electric { background-color: #F7D02C; }
+.type-grass { background-color: #7AC74C; }
+.type-ice { background-color: #96D9D6; }
+.type-fighting { background-color: #C22E28; }
+.type-poison { background-color: #A33EA1; }
+.type-ground { background-color: #E2BF65; }
+.type-flying { background-color: #A98FF3; }
+.type-psychic { background-color: #F95587; }
+.type-bug { background-color: #A6B91A; }
+.type-rock { background-color: #B6A136; }
+.type-ghost { background-color: #735797; }
+.type-dragon { background-color: #6F35FC; }
+.type-dark { background-color: #705746; }
+.type-steel { background-color: #B7B7CE; }
+.type-fairy { background-color: #D685AD; }
+
+.filter-divider {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.generation-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.generation-option {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background-color: #ccc;  /* default gray */
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.generation-option:hover {
+  transform: scale(1.03);
+}
+
+.generation-option.active {
+  background-color: #e52e71; /* Or another color to indicate selection */
+}
+
+.filter-logic-toggle {
+  margin: 10px 0;
+  text-align: center;
   display: flex;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 10px;
+  gap: 10px;
 }
 
-button {
-  text-align: center;
-  background-color: #666;
+.match-logic-btn {
+  padding: 6px 12px;
+  background-color: #ccc; /* default gray */
   border: none;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 40px;
   border-radius: 10px;
-  color: white;
-  font-size: 22px;
+  color: #fff;
+  font-size: 0.9rem;
   cursor: pointer;
-  margin: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.match-logic-btn:hover {
+  transform: scale(1.05);
+}
+
+.match-logic-btn.active {
+  background-color: #ef3d3d; /* Active color */
+}
+
+/* Floating Pokéball Button */
+#pokeball-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 300;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+#pokeball-button img {
+  width: 60px;
+  height: 60px;
+}
+
+#pokeball-button:hover {
+  transform: translateY(-5px);
+  filter: brightness(0.8);
+}
+
+#masterball-button.active,
+#pokeball-button.active {
+  filter: brightness(0.7);
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.12);
+    opacity: 1;
+  }
+}
+
+.caught-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  transform: scale(0.12);
+  transform-origin: top right;
+  z-index: 10;
+  transition: none;
+  image-rendering: auto;
+  animation: pop 1.5s ease-out;
+  pointer-events: auto;
+}
+
+.caught-icon:hover {
+  position: absolute  !important; /* Keeps it at its set scale */
+  transform: scale(0.12) !important; /* Keeps it at its set scale */
+  filter: brightness(0.8);
+}
+
+/* Floating Master Ball Button */
+#masterball-button {
+  position: fixed;
+  bottom: 100px; /* Place it above the regular Pokéball button */
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 300;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+#masterball-button img {
+  width: 60px;
+  height: 60px;
+}
+
+#masterball-button:hover {
+  transform: translateY(-5px);
+  filter: brightness(0.8);
+}
+
+/* Caught Toggle Button */
+.caught-toggle-btn {
+  padding: 6px 12px;
+  background-color: #ccc; /* default off state */
+  border: none;
+  border-radius: 25px;
+  color: #000000;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 10px;
+}
+
+.caught-toggle-btn:hover {
+  transform: scale(1.05);
+}
+
+.caught-toggle-btn.active {
+  background-color: #00ff1a; /* active (on) state color */
+}
+
+.no-pokemon {
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Modal container (overlay) */
+.modal {
+  display: none;                 /* Hidden by default */
+  position: fixed;               /* Stay in place */
+  z-index: 500;                  /* On top of other elements */
+  left: 0;
+  top: 0;
+  width: 100%;                   /* Full width */
+  height: 100%;                  /* Full height */
+  overflow: auto;                /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;              /* Centered horizontally with some top margin */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;                    /* 80% of available width, adjust as needed */
+  max-width: 700px;              /* Maximum width */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  animation: fadeIn 0.5s;
+}
+
+/* Fade in animation for modal */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Close button style */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
 }
